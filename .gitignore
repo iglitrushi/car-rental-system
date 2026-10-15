@@ -1,0 +1,33 @@
+# NetBeans specific
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+
+# Compiled Java classes
+*.class
+
+# Package Files
+*.jar
+*.war
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database credentials (Keep this hidden!)
+database.properties
+
+# GPS token (never commit — sensitive client credential)
+WEB-INF/gps_token.txt
+gps_token.txt
+
+# GPS provider credentials
+gps.properties
+

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System</title>
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+   <style>
+    /* Language selector styles - FIXED DROPDOWN */
+    .language-dropdown {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .lang-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .lang-btn:hover {
+        background-color: #45a049;
+    }
+    
+    /* IMPORTANT FIXES FOR DROPDOWN */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        bottom: 100%;  /* This makes it appear ABOVE the button */
+        left: 0;
+        right: 0;
+        background-color: white;
+        min-width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+        box-shadow: 0px -8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 9999;  /* High z-index to appear above everything */
+        border-radius: 6px;
+        margin-bottom: 5px;
+    }
+    
+    /* Alternative: Make dropdown appear below */
+    /*
+    .dropdown-content {
+        top: 100%;
+        bottom: auto;
+        margin-top: 5px;
+        margin-bottom: 0;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    */
+    
+    .dropdown-content a {
+        color: #333;
+        padding: 8px 12px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s;
+        font-size: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .show {
+        display: block !important;
+    }
+    
+    .flag-icon {
+        font-size: 16px;
+        min-width: 20px;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .dropdown-content.show {
+        animation: fadeIn 0.2s ease;
+    }
+    
+    .translate-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e5e7eb;
+        position: relative;
+    }
+    
+    /* Fix for any overflow issues */
+    .bg-white {
+        overflow: visible !important;
+    }
+</style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen bg-[url('assets/images/welcome.jpg')] bg-cover bg-center">
+
+  
+    <nav class="bg-blue-800 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold text-white" data-translate="app.title">Car Rental System</h1>
+            
+            <a href="admin_login.jsp" 
+               class="bg-gray-200 text-blue-800 rounded-lg font-semibold hover:bg-gray-300 transition"
+               data-translate="nav.admin">
+                   Admin Login
+            </a>
+            
+            <a href="user_dashboard.jsp" 
+               class="bg-gray-200 text-blue-800 rounded-lg font-semibold hover:bg-gray-300 transition"
+               data-translate="nav.dashboard">
+                   Dashboard User
+            </a>
+        </div>
+    </nav>
+
+    
+    <main class="flex-1 container mx-auto flex flex-col lg:flex-row items-center justify-between p-6">
+      
+        <div class="text-center lg:text-left max-w-lg">
+            <h2 class="text-4xl font-bold text-blue-600" data-translate="welcome.title">Welcome to my Web App</h2>
+            <p class="mt-4 text-lg" data-translate="welcome.message">Your trusted car rental platform</p>
+        </div>
+
+       
+        <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h3 class="text-2xl font-bold text-center mb-4" data-translate="login.title">Login</h3>
+            <form action="LoginServlet" method="post">
+                <label class="block text-sm font-medium" data-translate="login.username">Username</label>
+                <input type="text" name="username" placeholder="Enter username" 
+                    class="w-full px-3 py-2 border rounded-md mb-2">
+
+                <label class="block text-sm font-medium" data-translate="login.password">Password</label>
+                <input type="password" name="password" placeholder="Enter password" 
+                    class="w-full px-3 py-2 border rounded-md mb-4">
+
+                <button type="submit" 
+                    class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md"
+                    data-translate="login.button">
+                    Login
+                </button>
+
+                
+                <a href="./register.jsp" 
+                    class="w-full block text-center bg-green-500 hover:bg-green-600 text-white py-2 rounded-md mt-4"
+                    data-translate="register.button">
+                    Register
+                </a>
+
+            </form>
+            
+            <!-- Language Translation Section - MOVED HERE and MADE SMALLER -->
+            <div class="translate-section">
+                <div class="text-center">
+                    <div style="display: flex; justify-content: center;">
+                        <div class="language-dropdown">
+                            <button onclick="toggleDropdown()" class="lang-btn">
+                                <span class="flag-icon">
+                                    🌐
+                                </span>
+                                <span data-translate="select.language">Language</span>
+                                <span>▼</span>
+                            </button>
+                            <div id="languageDropdown" class="dropdown-content">
+                                <a onclick="changeLanguage('en')">
+                                    <span class="flag-icon">🇬🇧</span> English
+                                </a>
+                                <a onclick="changeLanguage('es')">
+                                    <span class="flag-icon">🇪🇸</span> Español
+                                </a>
+                                <a onclick="changeLanguage('fr')">
+                                    <span class="flag-icon">🇫🇷</span> Français
+                                </a>
+                                <a onclick="changeLanguage('de')">
+                                    <span class="flag-icon">🇩🇪</span> Deutsch
+                                </a>
+                                <a onclick="changeLanguage('it')">
+                                    <span class="flag-icon">🇮🇹</span> Italiano
+                                </a>
+                                <a onclick="changeLanguage('pt')">
+                                    <span class="flag-icon">🇵🇹</span> Português
+                                </a>
+                                <a onclick="changeLanguage('zh')">
+                                    <span class="flag-icon">🇨🇳</span> 中文
+                                </a>
+                                <a onclick="changeLanguage('ja')">
+                                    <span class="flag-icon">🇯🇵</span> 日本語
+                                </a>
+                                <a onclick="changeLanguage('ru')">
+                                    <span class="flag-icon">🇷🇺</span> Русский
+                                </a>
+                                <a onclick="changeLanguage('ar')">
+                                    <span class="flag-icon">🇸🇦</span> العربية
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+    <footer class="bg-blue-800 text-center p-4 text-white">
+        <p data-translate="footer.copyright">&copy; 2025 Car Rental System. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Translation dictionary for all languages
+        const translations = {
+            'en': {
+                'app.title': 'Car Rental System',
+                'nav.admin': 'Admin Login',
+                'nav.dashboard': 'Dashboard User',
+                'welcome.title': 'Welcome to my Web App',
+                'welcome.message': 'Your trusted car rental platform',
+                'select.language': 'Language',
+                'login.title': 'Login',
+                'login.username': 'Username',
+                'login.password': 'Password',
+                'login.button': 'Login',
+                'register.button': 'Register',
+                'footer.copyright': '© 2025 Car Rental System. All rights reserved.'
+            },
+            'es': {
+                'app.title': 'Sistema de Alquiler de Coches',
+                'nav.admin': 'Admin Iniciar Sesión',
+                'nav.dashboard': 'Usuario Tablero',
+                'welcome.title': 'Bienvenido a mi Web App',
+                'welcome.message': 'Tu plataforma de alquiler de coches de confianza',
+                'select.language': 'Idioma',
+                'login.title': 'Iniciar Sesión',
+                'login.username': 'Nombre de Usuario',
+                'login.password': 'Contraseña',
+                'login.button': 'Iniciar Sesión',
+                'register.button': 'Registrarse',
+                'footer.copyright': '© 2025 Sistema de Alquiler de Coches. Todos los derechos reservados.'
+            },
+            'fr': {
+                'app.title': 'Système de Location de Voitures',
+                'nav.admin': 'Admin Connexion',
+                'nav.dashboard': 'Tableau de Bord Utilisateur',
+                'welcome.title': 'Bienvenue sur mon Application Web',
+                'welcome.message': 'Votre plateforme de location de voitures de confiance',
+                'select.language': 'Langue',
+                'login.title': 'Connexion',
+                'login.username': "Nom d'utilisateur",
+                'login.password': 'Mot de passe',
+                'login.button': 'Se Connecter',
+                'register.button': "S'inscrire",
+                'footer.copyright': '© 2025 Système de Location de Voitures. Tous droits réservés.'
+            },
+            'de': {
+                'app.title': 'Auto Vermietung System',
+                'nav.admin': 'Admin Anmelden',
+                'nav.dashboard': 'Benutzer Dashboard',
+                'welcome.title': 'Willkommen zu meiner Web-App',
+                'welcome.message': 'Ihre vertrauenswürdige Autovermietungsplattform',
+                'select.language': 'Sprache',
+                'login.title': 'Anmelden',
+                'login.username': 'Benutzername',
+                'login.password': 'Passwort',
+                'login.button': 'Anmelden',
+                'register.button': 'Registrieren',
+                'footer.copyright': '© 2025 Auto Vermietung System. Alle Rechte vorbehalten.'
+            },
+            'zh': {
+                'app.title': '汽车租赁系统',
+                'nav.admin': '管理员登录',
+                'nav.dashboard': '用户仪表板',
+                'welcome.title': '欢迎使用我的网络应用',
+                'welcome.message': '您值得信赖的汽车租赁平台',
+                'select.language': '语言',
+                'login.title': '登录',
+                'login.username': '用户名',
+                'login.password': '密码',
+                'login.button': '登录',
+                'register.button': '注册',
+                'footer.copyright': '© 2025 汽车租赁系统。保留所有权利。'
+            },
+            'ja': {
+                'app.title': 'カー rental システム',
+                'nav.admin': '管理者ログイン',
+                'nav.dashboard': 'ユーザーダッシュボード',
+                'welcome.title': '私のウェブアプリへようこそ',
+                'welcome.message': '信頼できるカー rental プラットフォーム',
+                'select.language': '言語',
+                'login.title': 'ログイン',
+                'login.username': 'ユーザー名',
+                'login.password': 'パスワード',
+                'login.button': 'ログイン',
+                'register.button': '登録',
+                'footer.copyright': '© 2025 カー rental システム。無断転載を禁じます。'
+            }
+        };
+
+        // Language selector functions
+        function toggleDropdown() {
+            document.getElementById("languageDropdown").classList.toggle("show");
+        }
+        
+        // Close dropdown if clicked outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.lang-btn') && !event.target.closest('.lang-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+        
+        function changeLanguage(langCode) {
+            // Save language preference
+            localStorage.setItem('preferredLanguage', langCode);
+            
+            // Show loading message
+            showNotification(`Changing language to ${getLanguageName(langCode)}...`, 'info');
+            
+            // Translate all elements with data-translate attribute
+            translatePage(langCode);
+        }
+        
+        function translatePage(langCode) {
+            const elements = document.querySelectorAll('[data-translate]');
+            const translation = translations[langCode] || translations['en'];
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translation[key]) {
+                    element.textContent = translation[key];
+                }
+            });
+        }
+        
+        function getLanguageName(code) {
+            const languages = {
+                'en': 'English', 'es': 'Español', 'fr': 'Français', 
+                'de': 'Deutsch', 'it': 'Italiano', 'pt': 'Português',
+                'zh': '中文', 'ja': '日本語', 'ru': 'Русский', 'ar': 'العربية'
+            };
+            return languages[code] || code;
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            const bgColor = type === 'info' ? 'bg-blue-500' : 'bg-green-500';
+            notification.className = `fixed top-20 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50`;
+            notification.style.animation = 'fadeIn 0.5s ease';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    
+        // Load saved language preference on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && savedLang !== 'en') {
+                translatePage(savedLang);
+            }
+            
+            // Check for requireLogin parameter (existing functionality)
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('requireLogin') === 'true') {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+                messageDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Please login first to reserve this car!</span>
+                    </div>
+                `;
+                document.body.appendChild(messageDiv);
+                setTimeout(() => {
+                    messageDiv.classList.add('animate-fade-out');
+                    setTimeout(() => messageDiv.remove(), 500);
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+
+# Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+# Click nbfs://nbhost/SystemFileSystem/Templates/Other/properties.properties to edit this template
+
+
+gps.base.url=https://your-gps-provider.example.com
+gps.account.id=YOUR_ACCOUNT_ID
+gps.username=YOUR_USERNAME
+gps.password=YOUR_ENCODED_PASSWORD
+gps.app.name=Car_System_App
