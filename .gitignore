@@ -31,3 +31,5 @@ gps_token.txt
 # GPS provider credentials
 gps.properties
 
+paypal.properties
+

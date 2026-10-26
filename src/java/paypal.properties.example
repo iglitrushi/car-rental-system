@@ -1,0 +1,4 @@
+# Copy this file to paypal.properties and fill in your own PayPal credentials
+paypal.client.id="AfrBs4mlA5nvWseNYOrdGQM-YZCHIxq9SIWLsHpIOQeXxCuogN8h_-m9FJqtv1TUq3vJLrDmN0EQy01U";
+paypal.client.secret="EFTF4anawXFK-FL962JuykLax5aGkFSktTNidPxCa3xrN9qQs1qZcctSYRwPyDc3VIuTlqGNmBEuehJ5";
+paypal.base.url=https://api-m.sandbox.paypal.com
